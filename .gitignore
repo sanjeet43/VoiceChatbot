@@ -1,2 +1,8 @@
-# Node modules
+# Ignore node_modules directory (dependencies)
 node_modules/
+
+# Ignore environment variables file
+.env
+
+# Ignore generated audio
+uploads/

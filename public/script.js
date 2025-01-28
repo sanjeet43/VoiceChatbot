@@ -19,7 +19,6 @@ if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
     transcriptDisplay.textContent = `You said: "${text}"`;
 
     try {
-      // POST request to generate the audio
       const response = await fetch("http://localhost:3000/text-to-speech", {
         method: "POST",
         headers: {
@@ -29,15 +28,10 @@ if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
       });
 
       if (response.ok) {
-        // Fetch the audio file
-        const audioResponse = await fetch("http://localhost:3000/get-audio");
-        if (audioResponse.ok) {
-          audioOutput.src = `http://localhost:3000/get-audio?timestamp=${new Date().getTime()}`;
-          audioOutput.load();
-          audioOutput.play();
-        } else {
-          alert("Error fetching the audio file");
-        }
+        const data = await response.json();
+        audioOutput.src = `http://localhost:3000${data.audioFile}?timestamp=${new Date().getTime()}`;
+        audioOutput.load();
+        audioOutput.play();
       } else {
         alert("Error generating audio");
       }
